@@ -2,7 +2,6 @@ package com.practise.todo.todo.controller;
 
 import com.practise.todo.todo.model.Task;
 import com.practise.todo.todo.service.TaskService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
