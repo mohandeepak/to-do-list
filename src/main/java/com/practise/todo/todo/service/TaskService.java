@@ -1,5 +1,8 @@
 package com.practise.todo.todo.service;
 
+import com.practise.todo.todo.dto.CreateTaskDTO;
+import com.practise.todo.todo.dto.TaskDTO;
+import com.practise.todo.todo.dto.UpdateTaskDTO;
 import com.practise.todo.todo.model.Task;
 import com.practise.todo.todo.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,10 +22,10 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task createTask(Task task) {
+    public Task createTask(CreateTaskDTO createTaskDTO) {
         Task createdTask = new Task();
-        createdTask.setName(task.getName());
-        createdTask.setDescription(task.getDescription());
+        createdTask.setName(createTaskDTO.getName());
+        createdTask.setDescription(createTaskDTO.getDescription());
 
        return taskRepository.saveAndFlush(createdTask);
 
@@ -43,13 +46,12 @@ public class TaskService {
        taskRepository.deleteById(id);
     }
 
-    public void updateTaskById(Long id, Task task) {
+    public Task updateTaskById(Long id, UpdateTaskDTO updateTaskDTO) {
 
-        if (taskRepository.existsById(id)){
-            task.setId(id);
-            taskRepository.save(task);
-        } else {
-            throw new EntityNotFoundException("Task with ID " + id + " not found");
-        }
+        Task existingTask = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task not found with id" + id));
+
+        existingTask.setName(updateTaskDTO.getName());
+        existingTask.setDescription(updateTaskDTO.getDescription());
+        return taskRepository.save(existingTask);
     }
 }
